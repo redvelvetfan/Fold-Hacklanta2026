@@ -1,15 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fold — Recovery Companion</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Gambling Urge Tracker Webapp</title>
-    </head>
+  <!-- SIDEBAR NAV -->
+  <nav class="sidebar">
+    <div class="logo">FOLD</div>
+    <div class="tagline">lay your cards down</div>
+    <ul class="nav-links">
+      <li><button class="nav-btn active" data-tab="log">⬡ Log Urge</button></li>
+      <li><button class="nav-btn" data-tab="history">⬡ History</button></li>
+      <li><button class="nav-btn" data-tab="dashboard">⬡ Dashboard</button></li>
+    </ul>
+    <div class="streak-box">
+      <div class="streak-label">urges logged</div>
+      <div class="streak-number" id="streak-count">0</div>
+      <div class="streak-sub">instead of gambling</div>
+    </div>
+    <div class="crisis-box">
+      <div class="crisis-label">need help now?</div>
+      <a href="tel:18005224700" class="crisis-btn">📞 GA Hotline</a>
+      <div class="crisis-number">1-800-522-4700</div>
+    </div>
+  </nav>
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- LOG TAB -->
+    <section class="tab active" id="tab-log">
+      <div class="tab-header">
+        <h1>Log an Urge</h1>
+        <p class="tab-sub">You reached for this app instead. That's already a win.</p>
+      </div>
+
+      <div class="card">
+        <label class="field-label">How strong is this urge?</label>
+        <div class="slider-row">
+          <span class="slider-low">calm</span>
+          <input type="range" min="1" max="10" value="5" id="intensity-slider" class="slider"/>
+          <span class="slider-high">intense</span>
+        </div>
+        <div class="intensity-display" id="intensity-display">5 / 10</div>
+
+        <label class="field-label" style="margin-top:2rem;">What's triggering this urge?</label>
+        <textarea
+          id="trigger-input"
+          class="textarea"
+          placeholder="e.g. I'm bored and stressed about money. I keep thinking one win would fix everything..."
+          rows="4"
+        ></textarea>
+
+        <button class="submit-btn" id="submit-btn">Get My Reframe →</button>
+      </div>
+
+      <!-- AI RESPONSE CARD (hidden until response) -->
+      <div class="card response-card hidden" id="response-card">
+        <div class="response-header">
+          <span class="response-icon">♠</span>
+          <span class="response-title">Your Reframe</span>
+        </div>
+        <div class="response-text" id="response-text"></div>
+        <div class="response-footer">
+          <span>CBT-informed · powered by Gemini</span>
+          <button class="log-another-btn" id="log-another-btn">Log another urge</button>
+        </div>
+      </div>
+
+      <!-- LOADING STATE -->
+      <div class="card loading-card hidden" id="loading-card">
+        <div class="loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="loading-text">Finding your reframe...</div>
+      </div>
+    </section>
+
+    <!-- HISTORY TAB -->
+    <section class="tab hidden" id="tab-history">
+      <div class="tab-header">
+        <h1>Your History</h1>
+        <p class="tab-sub">Every entry here is a moment you chose differently.</p>
+      </div>
+      <div id="history-list" class="history-list"></div>
+      <div id="history-empty" class="empty-state hidden">
+        <p>No urges logged yet. When you log your first one, it'll appear here.</p>
+      </div>
+    </section>
+
+    <!-- DASHBOARD TAB -->
+    <section class="tab hidden" id="tab-dashboard">
+      <div class="tab-header">
+        <h1>Your Progress</h1>
+        <p class="tab-sub">Patterns reveal power. Here's what your data says.</p>
+      </div>
+      <div class="charts-grid">
+        <div class="card chart-card">
+          <div class="chart-title">Urge Intensity Over Time</div>
+          <canvas id="intensity-chart"></canvas>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-title">Urges by Time of Day</div>
+          <canvas id="time-chart"></canvas>
+        </div>
+      </div>
+      <div id="dashboard-empty" class="empty-state hidden">
+        <p>Log a few urges and your patterns will appear here.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
